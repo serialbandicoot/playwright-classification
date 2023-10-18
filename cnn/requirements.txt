@@ -9,3 +9,5 @@ PyInquirer
 Pillow
 jupyter
 ipykernel
+pytest
+black
