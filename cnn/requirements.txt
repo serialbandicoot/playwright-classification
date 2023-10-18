@@ -1,0 +1,11 @@
+tensorflow
+keras
+numpy
+matplotlib
+pydot
+scipy
+tensorflowjs
+PyInquirer
+Pillow
+jupyter
+ipykernel

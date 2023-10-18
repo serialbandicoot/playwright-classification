@@ -128,3 +128,15 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Ignore lib
+lib/
+
+# Playwright
+test-results/
+
+# Python
+cnn/.venv
+
+# Mac
+.DS_Store

@@ -1,0 +1,65 @@
+{
+    "name": "playwright-classification",
+    "version": "1.1.16",
+    "description": "Custom playwright matchers to validate prediction classifiers on images or text",
+    "main": "lib/src/index.js",
+    "types": "lib/src/index.d.ts",
+    "files": [
+        "lib/src/index.js",
+        "lib/src/index.d.ts"
+    ],
+    "scripts": {
+        "prepare": "npm run build",
+        "prepublishOnly": "npm test && npm run lint",
+        "build": "tsc",
+        "postbuild": "cp ./src/*.d.ts ./lib/src/",
+        "start": "node server/index.js",
+        "test": "playwright test",
+        "lint": "eslint --ext .ts src/ --fix",
+        "format": "prettier --config .prettierrc 'src/*.ts' --write",
+        "format:check": "prettier --config .prettierrc 'src/*.ts' --check",
+        "release": "release-it --github.release",
+        "release:ci": "npm run release -- --ci --npm.skipChecks --no-git.requireCleanWorkingDir",
+        "release:patch": "npm run release -- patch",
+        "release:minor": "npm run release -- minor",
+        "release:major": "npm run release -- major"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/serialbandicoot/playwright-classification.git"
+    },
+    "keywords": [
+        "playwright",
+        "expect",
+        "assertions",
+        "typescript",
+        "e2e",
+        "testing",
+        "classification",
+        "prediction",
+        "matchers"
+    ],
+    "author": "Sam Treweek <samtreweek@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/serialbandicoot/playwright-classification/issues"
+    },
+    "homepage": "https://github.com/serialbandicoot/playwright-classification#readme",
+    "devDependencies": {
+        "@playwright/test": "^1.36.2",
+        "@types/expect": "^24.3.0",
+        "@typescript-eslint/eslint-plugin": "^6.3.0",
+        "@typescript-eslint/parser": "^6.3.0",
+        "eslint": "^8.46.0",
+        "eslint-config-prettier": "^9.0.0",
+        "eslint-plugin-prettier": "^5.0.0",
+        "prettier": "^3.0.1",
+        "release-it": "^16.1.3",
+        "typescript": "^5.1.6"
+    },
+    "dependencies": {
+        "@tensorflow/tfjs": "^4.11.0",
+        "@tensorflow/tfjs-node": "^4.11.0",
+        "expect": "^29.6.2"
+    }
+}
