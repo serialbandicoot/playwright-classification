@@ -14,7 +14,6 @@ import { createLocatorImage } from './image';
 
 export const playwrightClassification = {
   async toImageClassification(
-    this: thisType,
     locator: Locator,
     expected: string,
     options?: { threshold?: number; modelName?: string },
