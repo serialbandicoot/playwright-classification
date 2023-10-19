@@ -47,7 +47,6 @@
     "homepage": "https://github.com/serialbandicoot/playwright-classification#readme",
     "devDependencies": {
         "@playwright/test": "^1.36.2",
-        "@types/expect": "^24.3.0",
         "@typescript-eslint/eslint-plugin": "^6.3.0",
         "@typescript-eslint/parser": "^6.3.0",
         "eslint": "^8.46.0",
