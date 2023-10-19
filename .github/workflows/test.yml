@@ -19,6 +19,7 @@ jobs:
       - name: Install dependencies
         run: |
           pwd
+          ls
           npm install
 
       - name: Build
