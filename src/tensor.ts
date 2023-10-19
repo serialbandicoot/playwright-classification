@@ -80,18 +80,72 @@ export const mapBinaryPrediction = (
     throw new Error("Labels should be an array of length 2.");
   }
 
-  if (typeof threshold !== "number" || threshold < 0 || threshold > 1) {
-    throw new Error("Threshold should be a number between 0 and 1.");
-  }
-
-  if (Array.isArray(predictions) ) {
-    throw new Error("Binary predictions should not be an array but a 1d tensor.");
+  if (Array.isArray(predictions)) {
+    throw new Error(
+      "Binary predictions should not be an array but a 1d tensor.",
+    );
   }
 
   // Assuming you want to compare the first tensor from predictions
   // Extract the numeric value from the tensor
-  const predictedValue = predictions.dataSync()[0]; 
+  const predictedValue = predictions.dataSync()[0];
 
   const prediction = predictedValue >= threshold ? labels[0] : labels[1];
   return prediction;
+};
+
+// mapCategoryPrediction will run validation checks on the
+// inputs, extract the predictions and then rank the
+// the order. The top 1 is then compared to the threhold.
+
+export const mapCategoryPrediction = (
+  predictions: tf.Tensor<tf.Rank> | tf.Tensor<tf.Rank>[],
+  threshold: number,
+  labels: string[],
+) => {
+  if (!Array.isArray(labels) || labels.length === 2) {
+    throw new Error("Labels should be an array of more than two.");
+  }
+
+  if (typeof threshold !== "number" || threshold < 0 || threshold > 1) {
+    throw new Error("Threshold should be a number between 0 and 1.");
+  }
+
+  if (Array.isArray(predictions)) {
+    throw new Error(
+      "Category predictions should not be an array but a 1d tensor.",
+    );
+  }
+
+  // Assuming you want to compare the first tensor from predictions
+  // Extract the numeric value from the tensor
+  const predicted = predictions.dataSync();
+
+  if (predicted.length !== labels.length) {
+    throw new Error(
+      `Incorrect number of categories, provided ${labels.length} got ${predicted.length}`,
+    );
+  }
+
+  // Map predictions with labels
+  const predictedKV = labels.map((key, index) => ({ [key]: predicted[index] }));
+
+  // Get the highest match
+  let highestKey = "";
+  let highestValue = -Infinity;
+
+  predictedKV.forEach((item) => {
+    const key = Object.keys(item)[0];
+    const value = item[key];
+    if (value > highestValue) {
+      highestValue = value;
+      highestKey = key;
+    }
+  });
+
+  if (highestValue >= threshold) {
+    return highestKey;
+  }
+
+  return "";
 };

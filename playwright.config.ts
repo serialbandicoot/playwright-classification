@@ -1,4 +1,4 @@
-import playwrightClassification from './src';
+import { playwrightClassification } from './src'
 import { expect, PlaywrightTestConfig } from '@playwright/test';
 
 expect.extend(playwrightClassification);
@@ -14,18 +14,35 @@ const config: PlaywrightTestConfig = {
   use: {
     baseURL: 'http://localhost:3000/',
   },
-  metadata: { 
-    image: {
-      file: "./test/ml/model.json",
-      labels: [
+  metadata: {
+    models: [{
+      image: {
+        name: "binary",
+        file: "./cnn/model_output/binary/model.json",
+        labels: [
           "nofive",
           "five"
-      ],
-      dimensions: {
+        ],
+        dimensions: {
           width: 28,
           height: 28,
+        }
       }
-    }
+    }, {
+      image: {
+        name: "category",
+        file: "./cnn/model_output/category/model.json",
+        labels: [
+          "four",
+          "nine",
+          "two"
+        ],
+        dimensions: {
+          width: 28,
+          height: 28,
+        }
+      }
+    }],
   }
 };
 

@@ -1,7 +1,12 @@
-import { Metadata } from "@playwright/test";
+import { Metadata, errors } from "@playwright/test";
+
+export type ModelsMetadata = {
+  models: ImageClassificationMetadata[]
+}
 
 export type ImageClassificationMetadata = {
   image: {
+    name: string,
     file: string;
     labels: string[];
     dimensions: {
@@ -11,34 +16,86 @@ export type ImageClassificationMetadata = {
   };
 };
 
-export const validateImageMetadata = (
+interface ExtractedData {
+  valid: boolean;
+  imageErrors: string[];
+  imageModels: ImageClassificationMetadata[];
+}
+
+export const extractImageModels = (data: ImageClassificationMetadata[]): ExtractedData => {
+  let imageModels: ImageClassificationMetadata[] = [];
+  let imageErrors: string[] = [];
+  data.forEach(model => {
+    if (model.image) {
+      const result = validateImageMetadata(model.image);
+      if (result.valid) {
+        const imageMetadata = parseImageClassificationMetadata(model.image)
+        if (imageMetadata) {
+          imageModels.push(imageMetadata)
+        }
+      } else {
+        return imageErrors.push(result.errors.join("\n"))
+      }
+    }
+  });
+  if (imageErrors.length !== 0) {
+    return {valid: false, imageErrors: imageErrors, imageModels: imageModels}
+  }
+  
+  return {valid: true, imageErrors: imageErrors, imageModels: imageModels}
+}
+
+export const validateMetadata = (
   metadata: Metadata,
-): { valid: boolean; errors: string[] } => {
+  modelName?: string,
+): { valid: boolean; errors: string[], imageModels: ImageClassificationMetadata[] } => {
   const errors: string[] = [];
 
   if (!metadata) {
     errors.push("Metadata object is missing.");
   }
 
-  if (!metadata.image) {
-    errors.push("Image object is missing.");
+  if (!metadata.models) {
+    errors.push("No Models Data this need to be at least 1 in an Array");
   }
 
-  if (typeof metadata.image.file !== "string") {
+  const {valid, imageErrors, imageModels} = extractImageModels(metadata.models);
+
+  if (!valid) {
+    errors.push(imageErrors.join("\n"))
+  }
+
+  if (imageModels.length === 0) {
+    errors.push("Image objects are missing.");
+  }
+
+  if (errors.length === 0) {
+    return { valid: true, errors, imageModels };
+  }
+
+  return { valid: false, errors, imageModels };
+};
+
+export const validateImageMetadata = (
+  metadata: Metadata,
+): { valid: boolean; errors: string[] } => {
+  const errors: string[] = [];
+
+  if (typeof metadata.file !== "string") {
     errors.push('The "file" property should be a string.');
   }
 
   if (
-    !Array.isArray(metadata.image.labels) ||
-    !metadata.image.labels.every((label: string) => typeof label === "string")
+    !Array.isArray(metadata.labels) ||
+    !metadata.labels.every((label: string) => typeof label === "string")
   ) {
     errors.push('The "labels" property should be an array of strings.');
   }
 
   if (
-    !metadata.image.dimensions ||
-    typeof metadata.image.dimensions.width !== "number" ||
-    typeof metadata.image.dimensions.height !== "number"
+    !metadata.dimensions ||
+    typeof metadata.dimensions.width !== "number" ||
+    typeof metadata.dimensions.height !== "number"
   ) {
     errors.push(
       'The "dimensions" property should be an object with "width" and "height" as numbers.',
@@ -52,24 +109,17 @@ export const validateImageMetadata = (
   return { valid: false, errors };
 };
 
-export function parseImageClassificationMetadata(
-  metadata: Metadata,
-): ImageClassificationMetadata | null {
-  try {
-    const image = metadata.image;
-    if (
-      image &&
-      typeof image.file === "string" &&
-      Array.isArray(image.labels) &&
-      image.labels.every((label: string) => typeof label === "string") &&
-      image.dimensions &&
-      typeof image.dimensions.width === "number" &&
-      typeof image.dimensions.height === "number"
-    ) {
-      return { image };
+
+const parseImageClassificationMetadata = (image: Metadata): ImageClassificationMetadata => {
+  return {
+    image: {
+      name: image.name,
+      file: image.file,
+      labels: image.labels,
+      dimensions: {
+        width: image.dimensions.width,
+        height: image.dimensions.height,
+      },
     }
-    return null; // Invalid JSON structure
-  } catch (error) {
-    return null; // Error while parsing
   }
 }

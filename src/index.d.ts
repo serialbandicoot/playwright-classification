@@ -7,12 +7,12 @@ declare global {
       /**
        * Asserts that the locator matches the expected image classification
        * @example
-       * await expect(response).toImageClassification("dog", 0.95);
+       * await expect(response).toImageClassification("dog", 0.99);
        * @param label - string The expected classification.
-       * @param threshold - number The threshold to validate the prediction.
+       * @param options? - Options for ...
        * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
        **/
-      toImageClassification(label: string, threhold: number): Promise<Locator>;
+      toImageClassification(label: string, options?: {modelName?: string, threshold?: number}): Promise<Locator>;
     }
   }
 }

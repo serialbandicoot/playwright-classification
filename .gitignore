@@ -140,3 +140,7 @@ cnn/.venv
 
 # Mac
 .DS_Store
+
+.vscode/
+
+__pycache__/
