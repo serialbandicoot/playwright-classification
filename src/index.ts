@@ -1,8 +1,6 @@
-import { Expect, test, Locator } from '@playwright/test';
+import { test, Locator } from '@playwright/test';
 import { ImageClassificationMetadata, validateMetadata } from './metadata';
 
-// @ts-expect-error - no types
-import jestExpect from 'expect/build/matchers';
 import {
   ClassificationType,
   getClassificationType,
@@ -13,14 +11,6 @@ import {
   mapCategoryPrediction,
 } from './tensor';
 import { createLocatorImage } from './image';
-
-export interface Result {
-  pass: boolean;
-  message: () => string;
-  name: string;
-}
-
-export type thisType = ReturnType<Expect['getState']>;
 
 export const playwrightClassification = {
   async toImageClassification(
@@ -94,14 +84,17 @@ export const playwrightClassification = {
       return message.replaceAll(originalMatcherName, expectedMatcherName);
     };
 
-    const {
-      name: originalMatcherName,
-      message: originalMessage,
-      pass,
-    } = jestExpect.toBe.call({ ...this, customTesters: [] }, actual, expected) as Result;
-
-    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
-
-    return { pass, message };
+if (actual === expected) {
+      return {
+        message: () => "passed",
+        pass: true,
+      };
+    } else {
+      return {
+        message: () =>
+          `toImageClassification() assertion failed.\nYou expected '${expected}' but it's a ${actual}}\n`,
+        pass: false,
+      };
+    }
   },
 };
