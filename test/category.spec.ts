@@ -35,4 +35,9 @@ test.describe('Category classification', () => {
         }
     });
 
+    test('verify toImageClassification when image not in class and low threshold', async ({ page }) => {
+        await page.goto("/");
+        await expect(page.getByTestId("image-nofive")).toImageClassification("four", { modelName: "category", threshold: 0.5 });
+    });
+
 });

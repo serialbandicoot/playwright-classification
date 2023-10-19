@@ -47,7 +47,6 @@ export const extractImageModels = (data: ImageClassificationMetadata[]): Extract
 
 export const validateMetadata = (
   metadata: Metadata,
-  modelName?: string,
 ): { valid: boolean; errors: string[], imageModels: ImageClassificationMetadata[] } => {
   const errors: string[] = [];
 
