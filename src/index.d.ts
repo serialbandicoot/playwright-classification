@@ -1,4 +1,4 @@
-import type { Locator } from "playwright-core";
+import type { Locator } from 'playwright-core';
 
 declare global {
   namespace PlaywrightTest {
@@ -9,10 +9,10 @@ declare global {
        * @example
        * await expect(response).toImageClassification("dog", 0.99);
        * @param label - string The expected classification.
-       * @param options? - Options for ...
-       * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+       * @param options
+       * @see https://www.tensorflow.org/tutorials/images/classification
        **/
-      toImageClassification(label: string, options?: {modelName?: string, threshold?: number}): Promise<Locator>;
+      toImageClassification(label: string, options?: { modelName?: string; threshold?: number }): Promise<Locator>;
     }
   }
 }

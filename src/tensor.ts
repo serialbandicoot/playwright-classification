@@ -1,6 +1,6 @@
-import * as tf from "@tensorflow/tfjs";
-import * as tfn from "@tensorflow/tfjs-node";
-import * as fs from "fs";
+import * as tf from '@tensorflow/tfjs';
+import * as tfn from '@tensorflow/tfjs-node';
+import * as fs from 'fs';
 
 export const getImageTensor = async (
   path: string,
@@ -15,7 +15,7 @@ export const getImageTensor = async (
   const normalizedImage = tf.div(resizedImage, 255.0);
 
   // Expand dimensions to match the expected shape (1x244x244x3)
-  const inputTensor = normalizedImage.expandDims(0).cast("float32");
+  const inputTensor = normalizedImage.expandDims(0).cast('float32');
 
   return inputTensor;
 };
@@ -50,9 +50,9 @@ export const getPredictionsFromModel = async (
 
 // Enum for ClassificationType
 export enum ClassificationType {
-  Category = "Category",
-  Binary = "Binary",
-  Unknown = "Unknown",
+  Category = 'Category',
+  Binary = 'Binary',
+  Unknown = 'Unknown',
 }
 
 // getClassificationType will return the "binary" or "category"
@@ -63,9 +63,9 @@ export const getClassificationType = (model: tf.LayersModel) => {
   const outputLayer = model.layers[model.layers.length - 1]; // Get the last layer
   const outputLayerConfig = outputLayer.getConfig();
 
-  if (outputLayerConfig.activation === "softmax") {
+  if (outputLayerConfig.activation === 'softmax') {
     return ClassificationType.Category;
-  } else if (outputLayerConfig.activation === "sigmoid") {
+  } else if (outputLayerConfig.activation === 'sigmoid') {
     return ClassificationType.Binary;
   } else {
     return ClassificationType.Unknown;
@@ -77,13 +77,11 @@ export const mapBinaryPrediction = (
   labels: string[],
 ) => {
   if (!Array.isArray(labels) || labels.length !== 2) {
-    throw new Error("Labels should be an array of length 2.");
+    throw new Error('Labels should be an array of length 2.');
   }
 
   if (Array.isArray(predictions)) {
-    throw new Error(
-      "Binary predictions should not be an array but a 1d tensor.",
-    );
+    throw new Error('Binary predictions should not be an array but a 1d tensor.');
   }
 
   // Assuming you want to compare the first tensor from predictions
@@ -104,17 +102,15 @@ export const mapCategoryPrediction = (
   labels: string[],
 ) => {
   if (!Array.isArray(labels) || labels.length === 2) {
-    throw new Error("Labels should be an array of more than two.");
+    throw new Error('Labels should be an array of more than two.');
   }
 
-  if (typeof threshold !== "number" || threshold < 0 || threshold > 1) {
-    throw new Error("Threshold should be a number between 0 and 1.");
+  if (typeof threshold !== 'number' || threshold < 0 || threshold > 1) {
+    throw new Error('Threshold should be a number between 0 and 1.');
   }
 
   if (Array.isArray(predictions)) {
-    throw new Error(
-      "Category predictions should not be an array but a 1d tensor.",
-    );
+    throw new Error('Category predictions should not be an array but a 1d tensor.');
   }
 
   // Assuming you want to compare the first tensor from predictions
@@ -122,16 +118,14 @@ export const mapCategoryPrediction = (
   const predicted = predictions.dataSync();
 
   if (predicted.length !== labels.length) {
-    throw new Error(
-      `Incorrect number of categories, provided ${labels.length} got ${predicted.length}`,
-    );
+    throw new Error(`Incorrect number of categories, provided ${labels.length} got ${predicted.length}`);
   }
 
   // Map predictions with labels
   const predictedKV = labels.map((key, index) => ({ [key]: predicted[index] }));
 
   // Get the highest match
-  let highestKey = "";
+  let highestKey = '';
   let highestValue = -Infinity;
 
   predictedKV.forEach((item) => {
@@ -147,5 +141,5 @@ export const mapCategoryPrediction = (
     return highestKey;
   }
 
-  return "";
+  return '';
 };

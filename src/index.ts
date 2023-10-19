@@ -1,11 +1,8 @@
-import { Expect, test, Locator } from "@playwright/test";
-import {
-  ImageClassificationMetadata,
-  validateMetadata,
-} from "./metadata";
+import { Expect, test, Locator } from '@playwright/test';
+import { ImageClassificationMetadata, validateMetadata } from './metadata';
 
 // @ts-expect-error - no types
-import jestExpect from "expect/build/matchers";
+import jestExpect from 'expect/build/matchers';
 import {
   ClassificationType,
   getClassificationType,
@@ -14,8 +11,8 @@ import {
   loadModel,
   mapBinaryPrediction,
   mapCategoryPrediction,
-} from "./tensor";
-import { createLocatorImage } from "./image";
+} from './tensor';
+import { createLocatorImage } from './image';
 
 export interface Result {
   pass: boolean;
@@ -23,16 +20,16 @@ export interface Result {
   name: string;
 }
 
-export type thisType = ReturnType<Expect["getState"]>;
+export type thisType = ReturnType<Expect['getState']>;
 
 export const playwrightClassification = {
   async toImageClassification(
     this: thisType,
     locator: Locator,
     expected: string,
-    options?: {threshold?: number, modelName?: string},
+    options?: { threshold?: number; modelName?: string },
   ) {
-    const expectedMatcherName = "toImageClassification";
+    const expectedMatcherName = 'toImageClassification';
 
     // Get metadata from playright.config.ts
     const metadata = test.info().config.metadata;
@@ -40,22 +37,22 @@ export const playwrightClassification = {
 
     // Validate the image metadata to check if all the
     // required fields are present and correctly typed.
-    const {valid, errors, imageModels} = validateMetadata(metadata, options?.modelName);
+    const { valid, errors, imageModels } = validateMetadata(metadata);
     if (!valid) {
-      return new Error(errors.join("\n"));
+      return new Error(errors.join('\n'));
     }
 
     // Get First or Correct Model by Name or Error
     let imageModel: ImageClassificationMetadata;
     if (options?.modelName) {
-      const foundImageModel = imageModels.find(model => model.image.name === options?.modelName);
+      const foundImageModel = imageModels.find((model) => model.image.name === options?.modelName);
       if (foundImageModel) {
         imageModel = foundImageModel;
       } else {
         return new Error(`The model ${options?.modelName} was not found check Metdata`);
       }
     } else {
-      imageModel = imageModels[0]
+      imageModel = imageModels[0];
     }
 
     let threhold = 0.95;
@@ -68,7 +65,7 @@ export const playwrightClassification = {
     await createLocatorImage(locator, imagePath);
 
     // Define actual
-    let actual = "";
+    let actual = '';
 
     if (imageModel) {
       // Create Image Tensor
@@ -87,25 +84,13 @@ export const playwrightClassification = {
       // Binary || Category
       const type = getClassificationType(model);
       if (type == ClassificationType.Binary) {
-        actual = mapBinaryPrediction(
-          predictions,
-          threhold,
-          imageModel.image.labels,
-        );
+        actual = mapBinaryPrediction(predictions, threhold, imageModel.image.labels);
       } else if (type == ClassificationType.Category) {
-        actual = mapCategoryPrediction(
-          predictions,
-          threhold,
-          imageModel.image.labels,
-        );
+        actual = mapCategoryPrediction(predictions, threhold, imageModel.image.labels);
       }
     }
 
-    const normalize = (
-      message: string,
-      originalMatcherName: string,
-      expectedMatcherName: string,
-    ): string => {
+    const normalize = (message: string, originalMatcherName: string, expectedMatcherName: string): string => {
       return message.replaceAll(originalMatcherName, expectedMatcherName);
     };
 
@@ -113,14 +98,9 @@ export const playwrightClassification = {
       name: originalMatcherName,
       message: originalMessage,
       pass,
-    } = jestExpect.toBe.call(
-      { ...this, customTesters: [] },
-      actual,
-      expected,
-    ) as Result;
+    } = jestExpect.toBe.call({ ...this, customTesters: [] }, actual, expected) as Result;
 
-    const message = () =>
-      normalize(originalMessage(), originalMatcherName, expectedMatcherName);
+    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
     return { pass, message };
   },
