@@ -18,6 +18,7 @@ jobs:
           node-version: '18'
       - name: Install dependencies
         run: |
+          pwd
           npm install
 
       - name: Build
