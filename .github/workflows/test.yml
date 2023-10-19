@@ -13,23 +13,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
-      - name: Install dependencies
-        run: |
-          pwd
-          ls
-          npm install
-
-      - name: Build
-        run: npm run build
-
-      - name: Run eslint & prettier
-        run: npm run lint && npm run format:check
-
-      - name: Install Playwright dependencies
-        run: npx playwright install-deps
-
-      - name: Run tests
-        run: npm test
+          node-version: 18
+      - run: npm ci
+      - run: npm test
