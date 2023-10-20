@@ -13,13 +13,7 @@ import {
 import { createLocatorImage } from './image';
 
 export const playwrightClassification = {
-  async toImageClassification(
-    locator: Locator,
-    expected: string,
-    options?: { threshold?: number; modelName?: string },
-  ) {
-    const expectedMatcherName = 'toImageClassification';
-
+  async toImageClassification(locator: Locator, expected: string, options?: { threshold?: number; modelName?: string }) {
     // Get metadata from playright.config.ts
     const metadata = test.info().config.metadata;
     const info = test.info();
@@ -79,19 +73,14 @@ export const playwrightClassification = {
       }
     }
 
-    const normalize = (message: string, originalMatcherName: string, expectedMatcherName: string): string => {
-      return message.replaceAll(originalMatcherName, expectedMatcherName);
-    };
-
-if (actual === expected) {
+    if (actual === expected) {
       return {
-        message: () => "passed",
+        message: () => 'passed',
         pass: true,
       };
     } else {
       return {
-        message: () =>
-          `toImageClassification() assertion failed.\nYou expected '${expected}' but receieved '${actual}'`,
+        message: () => `toImageClassification() assertion failed.\nYou expected '${expected}' but receieved '${actual}'`,
         pass: false,
       };
     }
