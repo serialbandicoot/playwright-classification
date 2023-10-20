@@ -29,7 +29,7 @@ jobs:
       - name: NPM Setup
         run: |
           npm set registry "https://registry.npmjs.org/"
-          npm set //registry.npmjs.org/:_authToken $NPM_TOKEN
+          npm set //registry.npmjs.org/:_authToken $RELEASE_NPM_TOKEN
           npm whoami
       - name: Git Setup
         run: |
