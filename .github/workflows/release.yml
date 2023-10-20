@@ -1,0 +1,62 @@
+name: Publish to NPM registry
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseType:
+        description: 'Release type - major, minor or patch'
+        required: true
+        default: 'patch'
+      distTag:
+        description: 'NPM tag (e.g. use "next" to release a test version)'
+        required: true
+        default: 'latest'
+
+env:
+  NPM_TOKEN: ${{ secrets.RELEASE_NPM_TOKEN }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: 'main'
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: NPM Setup
+        run: |
+          npm set registry "https://registry.npmjs.org/"
+          npm set //registry.npmjs.org/:_authToken $NPM_TOKEN
+          npm whoami
+      - name: Git Setup
+        run: |
+          git config --global user.email "samtreweek@gmail.com"
+          git config --global user.name "Sam Treweek"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run eslint & prettier
+        run: |
+          npm run lint
+          npm run format:check
+
+      - name: Install Playwright dependencies
+        run: npx playwright install-deps
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build Project
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Release
+        run: npm run release:ci -- ${{github.event.inputs.releaseType}} --npm.tag=${{github.event.inputs.distTag}}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.RELEASE_NPM_TOKEN }}
