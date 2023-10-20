@@ -29,9 +29,7 @@ test.describe('Binary classification', () => {
         } catch (error) {
             const withoutColorCodes: string = error.message.replace(/\x1B\[[0-?]*[ -/]*[@-~]/g, '');
             
-            expect(withoutColorCodes).toContain("expect(received).toImageClassification(expected) // Object.is equality")
-            expect(withoutColorCodes).toContain('Expected: "nofive"')
-            expect(withoutColorCodes).toContain('Received: "five"')
+            expect(withoutColorCodes).toContain("toImageClassification() assertion failed.\nYou expected 'nofive' but receieved 'five'")
         }
     });
 
@@ -42,9 +40,7 @@ test.describe('Binary classification', () => {
         } catch (error) {
             const withoutColorCodes: string = error.message.replace(/\x1B\[[0-?]*[ -/]*[@-~]/g, '');
             
-            expect(withoutColorCodes).toContain("expect(received).toImageClassification(expected) // Object.is equality")
-            expect(withoutColorCodes).toContain('Expected: "five"')
-            expect(withoutColorCodes).toContain('Received: "nofive"')
+            expect(withoutColorCodes).toContain("toImageClassification() assertion failed.\nYou expected 'five' but receieved 'nofive'")
         }
     });
 

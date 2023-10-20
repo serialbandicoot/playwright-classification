@@ -27,11 +27,8 @@ test.describe('Category classification', () => {
         try {
             await expect(page.getByTestId("image-nine")).toImageClassification("two", {modelName: "category"});
         } catch (error) {
-            const withoutColorCodes: string = error.message.replace(/\x1B\[[0-?]*[ -/]*[@-~]/g, '');
             
-            expect(withoutColorCodes).toContain("expect(received).toImageClassification(expected) // Object.is equality")
-            expect(withoutColorCodes).toContain('Expected: "two"')
-            expect(withoutColorCodes).toContain('Received: "nine"')
+            expect(error.message).toContain("toImageClassification() assertion failed.\nYou expected 'two' but receieved 'nine'");
         }
     });
 

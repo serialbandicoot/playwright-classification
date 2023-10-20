@@ -91,7 +91,7 @@ if (actual === expected) {
     } else {
       return {
         message: () =>
-          `toImageClassification() assertion failed.\nYou expected '${expected}' but it's a ${actual}}\n`,
+          `toImageClassification() assertion failed.\nYou expected '${expected}' but receieved '${actual}'`,
         pass: false,
       };
     }
