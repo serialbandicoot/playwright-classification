@@ -1,20 +1,20 @@
 {
     "name": "playwright-classification",
-    "version": "1.1.16",
+    "version": "1.1.17",
     "description": "Custom playwright matchers to validate prediction classifiers on images or text.",
-    "main": "lib/src/index.js",
-    "types": "lib/src/index.d.ts",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
     "files": [
-        "lib/src/index.js",
-        "lib/src/image.js",
-        "lib/src/tensor.js",
-        "lib/src/index.d.ts"
+        "lib/index.js",
+        "lib/image.js",
+        "lib/tensor.js",
+        "lib/index.d.ts"
       ],
     "scripts": {
         "prepare": "npm run build",
         "prepublishOnly": "npm test && npm run lint",
         "build": "tsc",
-        "postbuild": "cp ./src/index.d.ts lib/index.d.ts",
+        "postbuild": "cp ./src/index.d.ts ./lib/index.d.ts",
         "start": "node server/index.js",
         "test": "playwright test",
         "lint": "eslint --ext .ts src/ --fix",
