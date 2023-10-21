@@ -36,24 +36,20 @@ jobs:
           git config --global user.email "samtreweek@gmail.com"
           git config --global user.name "Sam Treweek"
 
-      - name: Install Dependencies
-        run: npm install
+      - run: | 
+         npx playwright install --with-deps
+         npm install
+
+      - name: Build
+        run: npm run build
+        env:
+            NODE_ENV: production
 
       - name: Run eslint & prettier
-        run: |
-          npm run lint
-          npm run format:check
-
-      - name: Install Playwright dependencies
-        run: npx playwright install-deps
+        run: npm run lint && npm run format:check
 
       - name: Run tests
         run: npm test
-
-      - name: Build Project
-        run: npm run build
-        env:
-          NODE_ENV: production
 
       - name: Release
         run: npm run release:ci -- ${{github.event.inputs.releaseType}} --npm.tag=${{github.event.inputs.distTag}}
