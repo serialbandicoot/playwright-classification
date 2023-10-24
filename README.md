@@ -1,7 +1,4 @@
-Certainly! Here's a markdown description for your library:
-
-```markdown
-# Playwright Image Classification Matchers
+# Playwright Classification 
 
 This library extends the capabilities of Playwright, a powerful UI automation tool, by introducing image classification matchers. It allows you to perform image classification within your end-to-end (E2E) testing using Playwright and TypeScript. With this library, you can incorporate machine learning techniques, such as convolutional neural networks, for image recognition and classification directly in your E2E tests.
 
