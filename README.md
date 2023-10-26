@@ -5,7 +5,7 @@ This library extends the capabilities of Playwright, a powerful UI automation to
 
 ## Usage Examples
 
-Here's an example of how to use the library in your Playwright E2E test:
+Here's an example of how to use the library in your Playwright E2E test.
 
 ```javascript
 test('Verify Image Classification', async ({ page }) => {
@@ -14,9 +14,11 @@ test('Verify Image Classification', async ({ page }) => {
 });
 ```
 
+This example, the macther will etract an image of the locator, this is saved to `test-results/{the-test-name}`. The locator In this example is found using `getByTestId`. The `toImageClassification` matcher will then classify the extracted element screenshot with model label `five.` See [Metadata Configuration](#metadata-configuration) below to setup labels.
+
 ### Optional
 
-If you have more than one model in the metadata, the first one will be used by default. To specify a different model, use the model name. The threshold is set to a default value of 0.95, but this can be changed at the assertion level.
+If you have more than one model in the metadata, the first one will be used by default. To specify a different model, use the model name. The threshold is set to a default value of `0.95`, but this can be changed at the assertion level.
 
 In the following example, the threshold has been artificially set too low. In practice, this would be user-dependent; however, setting it too low would cause predictions to always pass. It is advisable to maintain a higher threshold and review the model's predictive ability.
 
@@ -29,9 +31,9 @@ test('should pass when threshold has been set low', async ({ page }) => {
 });
 ```
 
-In the above example, we navigate to a web page and use the `toImageClassification` matcher to classify an image with the label `five.``
 
-## Configuration
+
+## Metadata Configuration
 
 To use the library, you need to configure metadata for the image classification models. Here's an example configuration:
 
@@ -67,6 +69,15 @@ metadata: {
     }]
 }
 ```
+
+## Metadata Configuration Items
+
+| Item         | Description                                                |
+|-------------- | ---------------------------------------------------------- |
+| model        | The name of the model or a user-defined reference.         |
+| file         | The relative path to the model.                             |
+| labels       | The order in which the model's predictive layer refers to the class labels. |
+| dimensions   | The width and height of the images on which the model has been trained. |
 
 In this configuration, you specify models for different image classification tasks, including the model files, labels, and dimensions.
 
