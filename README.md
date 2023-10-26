@@ -2,6 +2,7 @@
 
 This library extends the capabilities of Playwright, a powerful UI automation tool, by introducing image classification matchers. It allows you to perform image classification within your end-to-end (E2E) testing using Playwright and TypeScript. With this library, you can incorporate machine learning techniques, such as convolutional neural networks, for image recognition and classification directly in your E2E tests.
 
+Enjoy integrating image classification into your Playwright E2E tests with the Playwright Image Classification Matchers!
 
 ## Usage Examples
 
@@ -88,5 +89,3 @@ Don't forget to add the library!
 ```
 
 For more information on Playwright, refer to the [Playwright documentation](https://playwright.dev/).
-
-Enjoy seamlessly integrating image classification into your Playwright E2E tests with the Playwright Image Classification Matchers!
