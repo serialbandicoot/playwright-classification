@@ -16,10 +16,12 @@ test('Verify Image Classification', async ({ page }) => {
 
 ### Optional
 
-If you have more than one model in the metadata then the first will be used by default, to specify the model use the model name. The threshold is defaulted to 0.95, therefore this can be changes at the assertion level.
+If you have more than one model in the metadata, the first one will be used by default. To specify a different model, use the model name. The threshold is set to a default value of 0.95, but this can be changed at the assertion level.
+
+In the following example, the threshold has been artificially set too low. In practice, this would be user-dependent; however, setting it too low would cause predictions to always pass. It is advisable to maintain a higher threshold and review the model's predictive ability.
 
 ```javascript
-test('verify toImageClassification when image not in class and low threshold', async ({ page }) => {
+test('should pass when threshold has been set low', async ({ page }) => {
     // ...
     await expect(page.getByTestId("image-nofive")).toImageClassification(
         "four", { model: "category", threshold: 0.5 }
@@ -27,7 +29,7 @@ test('verify toImageClassification when image not in class and low threshold', a
 });
 ```
 
-In the above example, we navigate to a web page and use the `toImageClassification` matcher to classify an image with the label "five."
+In the above example, we navigate to a web page and use the `toImageClassification` matcher to classify an image with the label `five.``
 
 ## Configuration
 
@@ -71,5 +73,3 @@ In this configuration, you specify models for different image classification tas
 For more information on Playwright, refer to the [Playwright documentation](https://playwright.dev/).
 
 Enjoy seamlessly integrating image classification into your Playwright E2E tests with the Playwright Image Classification Matchers!
-```
-
