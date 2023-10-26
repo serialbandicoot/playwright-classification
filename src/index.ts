@@ -13,7 +13,7 @@ import {
 import { createLocatorImage } from './image';
 
 export const playwrightClassification = {
-  async toImageClassification(locator: Locator, expected: string, options?: { threshold?: number; modelName?: string }) {
+  async toImageClassification(locator: Locator, expected: string, options?: { threshold?: number; model?: string }) {
     // Get metadata from playright.config.ts
     const metadata = test.info().config.metadata;
     const info = test.info();
@@ -27,12 +27,12 @@ export const playwrightClassification = {
 
     // Get First or Correct Model by Name or Error
     let imageModel: ImageClassificationMetadata;
-    if (options?.modelName) {
-      const foundImageModel = imageModels.find((model) => model.image.name === options?.modelName);
+    if (options?.model) {
+      const foundImageModel = imageModels.find((model) => model.image.model === options?.model);
       if (foundImageModel) {
         imageModel = foundImageModel;
       } else {
-        return new Error(`The model ${options?.modelName} was not found check Metdata`);
+        return new Error(`The model ${options?.model} was not found check Metdata`);
       }
     } else {
       imageModel = imageModels[0];

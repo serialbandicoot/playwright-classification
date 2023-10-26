@@ -12,7 +12,7 @@ declare global {
        * @param options
        * @see https://www.tensorflow.org/tutorials/images/classification
        **/
-      toImageClassification(label: string, options?: { modelName?: string; threshold?: number }): Promise<Locator>;
+      toImageClassification(label: string, options?: { model?: string; threshold?: number }): Promise<Locator>;
     }
   }
 }

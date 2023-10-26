@@ -6,7 +6,7 @@ export type ModelsMetadata = {
 
 export type ImageClassificationMetadata = {
   image: {
-    name: string;
+    model: string;
     file: string;
     labels: string[];
     dimensions: {
@@ -108,7 +108,7 @@ export const validateImageMetadata = (metadata: Metadata): { valid: boolean; err
 const parseImageClassificationMetadata = (image: Metadata): ImageClassificationMetadata => {
   return {
     image: {
-      name: image.name,
+      model: image.model,
       file: image.file,
       labels: image.labels,
       dimensions: {

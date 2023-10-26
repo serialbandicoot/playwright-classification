@@ -17,7 +17,7 @@ const config: PlaywrightTestConfig = {
   metadata: {
     models: [{
       image: {
-        name: "binary",
+        model: "binary",
         file: "./cnn/model_output/binary/model.json",
         labels: [
           "nofive",
@@ -30,7 +30,7 @@ const config: PlaywrightTestConfig = {
       }
     }, {
       image: {
-        name: "category",
+        model: "category",
         file: "./cnn/model_output/category/model.json",
         labels: [
           "four",

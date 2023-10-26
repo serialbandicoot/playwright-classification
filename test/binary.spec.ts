@@ -9,7 +9,7 @@ test.describe('Binary classification', () => {
 
     test('verify toImageClassification confirmed with optional model name', async ({ page }) => {
         await page.goto("/");
-        await expect(page.getByTestId("image-five")).toImageClassification("five", {modelName: "binary"});
+        await expect(page.getByTestId("image-five")).toImageClassification("five", {model: "binary"});
     });
 
     test('verify toImageClassification un-confirmed', async ({ page }) => {
