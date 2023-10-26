@@ -31,8 +31,6 @@ test('should pass when threshold has been set low', async ({ page }) => {
 });
 ```
 
-
-
 ## Metadata Configuration
 
 To use the library, you need to configure metadata for the image classification models. Here's an example configuration:
@@ -79,7 +77,15 @@ metadata: {
 | labels       | The order in which the model's predictive layer refers to the class labels. |
 | dimensions   | The width and height of the images on which the model has been trained. |
 
-In this configuration, you specify models for different image classification tasks, including the model files, labels, and dimensions.
+## playwright.config.ts
+
+Don't forget to add the library!
+
+```typescript
+    import { playwrightClassification } from 'playwrightClassification';
+
+    expect.extend(playwrightClassification);
+```
 
 For more information on Playwright, refer to the [Playwright documentation](https://playwright.dev/).
 
