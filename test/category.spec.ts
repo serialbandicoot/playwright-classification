@@ -29,10 +29,9 @@ test.describe('Category classification', () => {
         } catch (error) {
             const withoutColorCodes: string = error.message.replace(/\x1B\[[0-?]*[ -/]*[@-~]/g, '');
             
-            // expect(withoutColorCodes).toContain("toImageClassification() assertion failed.\nYou expected 'five' but receieved 'nofive'")
             expect(withoutColorCodes).toContain("expect(received).toImageClassification(expected) // Object.is equality")
-            expect(withoutColorCodes).toContain("Expected Expected: \"two\"")
-            expect(withoutColorCodes).toContain("Received Expected: \"nine\"")
+            expect(withoutColorCodes).toContain("Expected: \"two\"")
+            expect(withoutColorCodes).toContain("Received: \"nine\"")
         }
     });
 

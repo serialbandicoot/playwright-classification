@@ -92,17 +92,6 @@ const playwrightClassification = {
 
     return { pass, message };
 
-    // if (actual === expected) {
-    //   return {
-    //     message: () => 'passed',
-    //     pass: true,
-    //   };
-    // } else {
-    //   return {
-    //     message: () => `toImageClassification() assertion failed.\nYou expected '${expected}' but receieved '${actual}'`,
-    //     pass: false,
-    //   };
-    // }
   },
 };
 

@@ -29,10 +29,9 @@ test.describe('Binary classification', () => {
         } catch (error) {
             const withoutColorCodes: string = error.message.replace(/\x1B\[[0-?]*[ -/]*[@-~]/g, '');
             
-            // expect(withoutColorCodes).toContain("No message was specified for this matcher.")
             expect(withoutColorCodes).toContain("expect(received).toImageClassification(expected) // Object.is equality")
-            expect(withoutColorCodes).toContain("Expected Expected: \"nofive\"")
-            expect(withoutColorCodes).toContain("Received Expected: \"five\"")     
+            expect(withoutColorCodes).toContain("Expected: \"nofive\"")
+            expect(withoutColorCodes).toContain("Received: \"five\"")     
         }
     });
 
@@ -43,10 +42,9 @@ test.describe('Binary classification', () => {
         } catch (error) {
             const withoutColorCodes: string = error.message.replace(/\x1B\[[0-?]*[ -/]*[@-~]/g, '');
             
-            // expect(withoutColorCodes).toContain("toImageClassification() assertion failed.\nYou expected 'five' but receieved 'nofive'")
             expect(withoutColorCodes).toContain("expect(received).toImageClassification(expected) // Object.is equality")
-            expect(withoutColorCodes).toContain("Expected Expected: \"five\"")
-            expect(withoutColorCodes).toContain("Received Expected: \"nofive\"")
+            expect(withoutColorCodes).toContain("Expected: \"five\"")
+            expect(withoutColorCodes).toContain("Received: \"nofive\"")
             
         }
     });
