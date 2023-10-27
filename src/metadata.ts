@@ -50,7 +50,7 @@ export const validateMetadata = (
 ): {
   valid: boolean;
   errors: string[];
-  imageModels: ImageClassificationMetadata[];
+  imageModels?: ImageClassificationMetadata[];
 } => {
   const errors: string[] = [];
 
@@ -60,6 +60,10 @@ export const validateMetadata = (
 
   if (!metadata.models) {
     errors.push('No Models Data this need to be at least 1 in an Array');
+  }
+
+  if (errors.length !== 0) {
+    return { valid: true, errors };
   }
 
   const { valid, imageErrors, imageModels } = extractImageModels(metadata.models);

@@ -30,7 +30,8 @@ const playwrightClassification = {
     // Validate the image metadata to check if all the
     // required fields are present and correctly typed.
     const { valid, errors, imageModels } = validateMetadata(metadata);
-    if (!valid) {
+
+    if (!valid || !imageModels) {
       return new Error(errors.join('\n'));
     }
 
