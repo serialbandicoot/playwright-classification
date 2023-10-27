@@ -91,7 +91,6 @@ const playwrightClassification = {
     const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
     return { pass, message };
-
   },
 };
 

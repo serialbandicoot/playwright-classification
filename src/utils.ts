@@ -14,5 +14,5 @@ export type thisType = ReturnType<Expect<CustomMatcherReturnType>>;
 export type Result = Pick<CustomMatcherReturnType, 'pass' | 'message' | 'name'>;
 
 export const normalize = (message: string, original: string, expected: string): string => {
-  return message.replaceAll(original, expected)
+  return message.replaceAll(original, expected);
 };
