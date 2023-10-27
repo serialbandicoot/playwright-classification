@@ -1,4 +1,6 @@
 import { test, Locator } from '@playwright/test';
+// @ts-expect-error - no types
+import jestExpect from 'expect/build/matchers';
 import { ImageClassificationMetadata, validateMetadata } from './metadata';
 
 import {
@@ -11,9 +13,11 @@ import {
   mapCategoryPrediction,
 } from './tensor';
 import { createLocatorImage } from './image';
+import { thisType, Result } from './utils';
 
 const playwrightClassification = {
-  async toImageClassification(locator: Locator, expected: string, options?: { threshold?: number; model?: string }) {
+  async toImageClassification(this: thisType, locator: Locator, expected: string, options?: { threshold?: number; model?: string }) {
+    const expectedMatcherName = 'toImageClassification';
     // Get metadata from playright.config.ts
     const metadata = test.info().config.metadata;
     const info = test.info();
@@ -73,17 +77,26 @@ const playwrightClassification = {
       }
     }
 
-    if (actual === expected) {
-      return {
-        message: () => 'passed',
-        pass: true,
-      };
-    } else {
-      return {
-        message: () => `toImageClassification() assertion failed.\nYou expected '${expected}' but receieved '${actual}'`,
-        pass: false,
-      };
-    }
+
+    const {
+      name: originalMatcherName,
+      message: originalMessage,
+      pass,
+    } = jestExpect.toBe.call({ ...this, customTesters: [] }, actual, expected) as Result;
+
+    return { pass, originalMessage };
+
+    // if (actual === expected) {
+    //   return {
+    //     message: () => 'passed',
+    //     pass: true,
+    //   };
+    // } else {
+    //   return {
+    //     message: () => `toImageClassification() assertion failed.\nYou expected '${expected}' but receieved '${actual}'`,
+    //     pass: false,
+    //   };
+    // }
   },
 };
 

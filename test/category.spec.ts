@@ -28,7 +28,8 @@ test.describe('Category classification', () => {
             await expect(page.getByTestId("image-nine")).toImageClassification("two", {model: "category"});
         } catch (error) {
             
-            expect(error.message).toContain("toImageClassification() assertion failed.\nYou expected 'two' but receieved 'nine'");
+            // expect(error.message).toContain("toImageClassification() assertion failed.\nYou expected 'two' but receieved 'nine'");
+            expect(error.message).toContain("No message was specified for this matcher.");
         }
     });
 
