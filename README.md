@@ -118,7 +118,7 @@ metadata: {
 
 A CNN is a type of artificial intelligence algorithm used for tasks like image recognition. It's inspired by the way the human visual system works. The question, why do I need this in my playwright tests? Is a question related to why do you need a matcher which can be ambingous in nature, due to a machine models predictive ability.
 
-The image below show's a collection of MNIST numbers and a completely unrelated image, which has made up the set of two models used in creating this library. The first a Binary CNN, this has been defined as Five or Not Five. The second Category defined as Two, Four and Nine. The underlying images, all found in the `cnn/data` folder have been used to create a model, which has been converted to a Tensorflow JSON model with it's associated weights. 
+The image below show's a collection of MNIST numbers and a completely unrelated image, which has made up the set of two models used in creating this library. The first a Binary CNN, this has been defined as Five or Not Five. The second Category defined as Two, Four and Nine. The underlying images, all found in the `cnn/data` folder have been used to create a model, which was then converted to a Tensorflow JSON model (with it's associated weights). 
 
 <img
     alt="image-site"
@@ -132,6 +132,8 @@ In the `cnn` folder there are two Jupyter notebooks, both of these have the full
 Simply, there are conditions when testing websites where a deterministic approach can be difficult to create the conditions required to use tools such as Visual Comparison or other Functional Testing approaches. The inspiration for this library was about testing science outputs. These outputs are complex images, which in large numbers made the creation of a machine-learned model relatively straightforward.
 
 The Binary and Category Jupyter notebooks should be used as the basis for creating ML Models for this library. It's advised to use these or the `.py` version in your own codebase so that you can validate the effectiveness of your model and appropriately set the model threshold.
+
+The `CNN` folder can also be completly copied and has been tested using `python-3.11`. There are associated tests, which can be used to validate your model.
 
 ### Notes on the TensorFlow model
 
