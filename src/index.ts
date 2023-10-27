@@ -12,7 +12,7 @@ import {
 } from './tensor';
 import { createLocatorImage } from './image';
 
-export const playwrightClassification = {
+const playwrightClassification = {
   async toImageClassification(locator: Locator, expected: string, options?: { threshold?: number; model?: string }) {
     // Get metadata from playright.config.ts
     const metadata = test.info().config.metadata;
@@ -86,3 +86,5 @@ export const playwrightClassification = {
     }
   },
 };
+
+export default playwrightClassification;
