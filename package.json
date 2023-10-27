@@ -5,10 +5,7 @@
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "files": [
-        "lib/index.js",
-        "lib/image.js",
-        "lib/tensor.js",
-        "lib/index.d.ts"
+        "lib"
     ],
     "scripts": {
         "prepare": "npm run build",
