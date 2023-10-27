@@ -16,7 +16,12 @@ import { createLocatorImage } from './image';
 import { thisType, Result, normalize } from './utils';
 
 const playwrightClassification = {
-  async toImageClassification(this: thisType, locator: Locator, expected: string, options?: { threshold?: number; model?: string }) {
+  async toImageClassification(
+    this: thisType,
+    locator: Locator,
+    expected: string,
+    options?: { threshold?: number; model?: string },
+  ) {
     const expectedMatcherName = 'toImageClassification';
     // Get metadata from playright.config.ts
     const metadata = test.info().config.metadata;
@@ -76,7 +81,6 @@ const playwrightClassification = {
         actual = mapCategoryPrediction(predictions, threhold, imageModel.image.labels);
       }
     }
-
 
     const {
       name: originalMatcherName,
