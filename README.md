@@ -138,4 +138,4 @@ The Binary and Category Jupyter notebooks should be used as the basis for creati
 1. Must be a TensorFlow JSON model
 2. Must include the bin weights
 
-For more information on Playwright, refer to the [Playwright documentation](https://playwright.dev/). And thanks to [Odottaa](https://github.com/elaichenkov/odottaa/) for the fantastic example used.
+For more information on Playwright, refer to the [Playwright documentation](https://playwright.dev/). And thanks to [Odottaa](https://github.com/elaichenkov/odottaa/) for the fantastic example used in creating this library.
