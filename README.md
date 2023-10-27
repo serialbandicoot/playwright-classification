@@ -120,12 +120,7 @@ A CNN is a type of artificial intelligence algorithm used for tasks like image r
 
 The image below show's a collection of MNIST numbers and a completely unrelated image, which has made up the set of two models used in creating this library. The first a Binary CNN, this has been defined as Five or Not Five. The second Category defined as Two, Four and Nine. The underlying images, all found in the `cnn/data` folder have been used to create a model, which has been converted to a Tensorflow JSON model with it's associated weights. 
 
-<img
-    height="80"
-    width="80"
-    alt="image-site"
-    src="./doc/image-site.png"
-  />
+![MNIST + ML Test Images](doc/image-site.png)  
 
 In the `cnn` folder there are two Jupyter notebooks, both of these have the full workings in how the model has been created. In test these models achieved a predictive value of `99%`. 
 
@@ -140,4 +135,4 @@ The Binary and Category Jupyter notebooks should be used as the basis for creati
 1. Must be a TensorFlow JSON model
 2. Must include the bin weights
 
-For more information on Playwright, refer to the [Playwright documentation](https://playwright.dev/). And thanks to [Odottaa]https://github.com/elaichenkov/odottaa for the fantastic example used.
+For more information on Playwright, refer to the [Playwright documentation](https://playwright.dev/). And thanks to [Odottaa](https://github.com/elaichenkov/odottaa/) for the fantastic example used.
