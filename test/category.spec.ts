@@ -27,9 +27,12 @@ test.describe('Category classification', () => {
         try {
             await expect(page.getByTestId("image-nine")).toImageClassification("two", {model: "category"});
         } catch (error) {
+            const withoutColorCodes: string = error.message.replace(/\x1B\[[0-?]*[ -/]*[@-~]/g, '');
             
-            // expect(error.message).toContain("toImageClassification() assertion failed.\nYou expected 'two' but receieved 'nine'");
-            expect(error.message).toContain("No message was specified for this matcher.");
+            // expect(withoutColorCodes).toContain("toImageClassification() assertion failed.\nYou expected 'five' but receieved 'nofive'")
+            expect(withoutColorCodes).toContain("expect(received).toImageClassification(expected) // Object.is equality")
+            expect(withoutColorCodes).toContain("Expected Expected: \"two\"")
+            expect(withoutColorCodes).toContain("Received Expected: \"nine\"")
         }
     });
 

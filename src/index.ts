@@ -13,7 +13,7 @@ import {
   mapCategoryPrediction,
 } from './tensor';
 import { createLocatorImage } from './image';
-import { thisType, Result } from './utils';
+import { thisType, Result, normalize } from './utils';
 
 const playwrightClassification = {
   async toImageClassification(this: thisType, locator: Locator, expected: string, options?: { threshold?: number; model?: string }) {
@@ -84,7 +84,9 @@ const playwrightClassification = {
       pass,
     } = jestExpect.toBe.call({ ...this, customTesters: [] }, actual, expected) as Result;
 
-    return { pass, originalMessage };
+    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
+
+    return { pass, message };
 
     // if (actual === expected) {
     //   return {
