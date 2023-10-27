@@ -121,8 +121,6 @@ A CNN is a type of artificial intelligence algorithm used for tasks like image r
 The image below show's a collection of MNIST numbers and a completely unrelated image, which has made up the set of two models used in creating this library. The first a Binary CNN, this has been defined as Five or Not Five. The second Category defined as Two, Four and Nine. The underlying images, all found in the `cnn/data` folder have been used to create a model, which has been converted to a Tensorflow JSON model with it's associated weights. 
 
 <img
-    height="100"
-    width="300"
     alt="image-site"
     src="https://raw.githubusercontent.com/serialbandicoot/playwright-classification/main/docs/image-site.png"
   />
