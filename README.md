@@ -17,14 +17,14 @@ npm i -D playwright-classification
 
 ### TypeScript
 1. Import `playwright-classification` module
-2. Extend expect with custom API matchers
+2. Extend expect with custom image matchers
 
 ```typescript
 // 1. In your playwright.config.ts
 import { expect } from '@playwright/test';
 import playwrightClassification from 'playwright-classification';
 
-// 2. extend expect with custom API matchers
+// 2. extend expect with custom image matchers
 expect.extend(playwrightClassification);
 ```
 
@@ -35,7 +35,7 @@ expect.extend(playwrightClassification);
 const { expect } = require('@playwright/test');
 const { default: playwrightClassification } = require('playwright-classification');
 
-// 2. extend expect with custom API matchers
+// 2. extend expect with custom image matchers
 expect.extend(playwrightClassification);
 ```
 
