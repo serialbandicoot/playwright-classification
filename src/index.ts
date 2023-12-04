@@ -50,8 +50,8 @@ const PlaywrightClassification = {
     }
 
     const metaLabels = imageModel.image.labels;
-    if (expected !== "" && !metaLabels.includes(expected)) {
-      return new Error(`There is no label ${expected} found in ${metaLabels.join(",")}`);
+    if (expected !== '' && !metaLabels.includes(expected)) {
+      return new Error(`There is no label ${expected} found in ${metaLabels.join(',')}`);
     }
 
     let threhold = 0.95;
