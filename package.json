@@ -3,7 +3,7 @@
     "version": "1.1.27",
     "description": "Custom playwright matchers to validate prediction classifiers on images or text.",
     "main": "lib/index.js",
-    "types": "lib/index.d.ts",
+    "types": "lib/global.d.ts",
     "files": [
         "lib"
     ],
