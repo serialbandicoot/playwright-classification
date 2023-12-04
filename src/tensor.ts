@@ -2,6 +2,11 @@ import * as tf from '@tensorflow/tfjs';
 import * as tfn from '@tensorflow/tfjs-node';
 import * as fs from 'fs';
 
+export type ActualResult = {
+  highestLabel: string
+  highestValue?: number
+}
+
 export const getImageTensor = async (
   path: string,
   width: number,
@@ -75,7 +80,7 @@ export const mapBinaryPrediction = (
   predictions: tf.Tensor<tf.Rank> | tf.Tensor<tf.Rank>[],
   threshold: number,
   labels: string[],
-) => {
+): ActualResult => {
   if (!Array.isArray(labels) || labels.length !== 2) {
     throw new Error('Labels should be an array of length 2.');
   }
@@ -89,7 +94,11 @@ export const mapBinaryPrediction = (
   const predictedValue = predictions.dataSync()[0];
 
   const prediction = predictedValue >= threshold ? labels[0] : labels[1];
-  return prediction;
+
+  return {
+    highestLabel: prediction,
+  };
+  
 };
 
 // mapCategoryPrediction will run validation checks on the
@@ -100,7 +109,7 @@ export const mapCategoryPrediction = (
   predictions: tf.Tensor<tf.Rank> | tf.Tensor<tf.Rank>[],
   threshold: number,
   labels: string[],
-) => {
+): ActualResult => {
   if (!Array.isArray(labels) || labels.length === 2) {
     throw new Error('Labels should be an array of more than two.');
   }
@@ -138,8 +147,13 @@ export const mapCategoryPrediction = (
   });
 
   if (highestValue >= threshold) {
-    return highestKey;
+    return {
+      highestLabel: highestKey,
+      highestValue: highestValue,
+    };
   }
 
-  return '';
+  return {
+    highestLabel: ''
+  };
 };

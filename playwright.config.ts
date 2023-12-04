@@ -1,15 +1,14 @@
-import playwrightClassification from './src'
+import PlaywrightClassification from './src'
 import { expect, PlaywrightTestConfig } from '@playwright/test';
 
-expect.extend(playwrightClassification);
+expect.extend(PlaywrightClassification);
 
 const config: PlaywrightTestConfig = {
   reporter: process.env.CI ? 'github' : 'list',
   webServer: {
     command: 'npm start',
     port: 3000,
-    timeout: 120 * 1000,
-    reuseExistingServer: !process.env.CI,
+    timeout: 60 * 1000,
   },
   use: {
     baseURL: 'http://localhost:3000/',
