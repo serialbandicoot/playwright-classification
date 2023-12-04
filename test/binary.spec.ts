@@ -32,6 +32,7 @@ test.describe('Binary classification', () => {
             expect(withoutColorCodes).toContain("expect(received).toImageClassification(expected) // Object.is equality")
             expect(withoutColorCodes).toContain("Expected: \"nofive\"")
             expect(withoutColorCodes).toContain("Received: \"five\"")     
+            expect(withoutColorCodes).toContain("The highest predicted label was five")
         }
     });
 
@@ -45,7 +46,7 @@ test.describe('Binary classification', () => {
             expect(withoutColorCodes).toContain("expect(received).toImageClassification(expected) // Object.is equality")
             expect(withoutColorCodes).toContain("Expected: \"five\"")
             expect(withoutColorCodes).toContain("Received: \"nofive\"")
-            
+            expect(withoutColorCodes).toContain("The highest predicted label was nofive")
         }
     });
 

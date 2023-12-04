@@ -4,6 +4,7 @@ import jestExpect from 'expect/build/matchers';
 import { ImageClassificationMetadata, validateMetadata } from './metadata';
 
 import {
+  ActualResult,
   ClassificationType,
   getClassificationType,
   getImageTensor,
@@ -15,7 +16,7 @@ import {
 import { createLocatorImage } from './image';
 import { thisType, Result, normalize } from './utils';
 
-const playwrightClassification = {
+const PlaywrightClassification = {
   async toImageClassification(
     this: thisType,
     locator: Locator,
@@ -57,8 +58,10 @@ const playwrightClassification = {
     const imagePath = `test-results/${info.title}/${expected}-${info.testId}.jpg`;
     await createLocatorImage(locator, imagePath);
 
-    // Define actual
-    let actual = '';
+    // Define actual-result
+    let actual: ActualResult = {
+      highestLabel: '',
+    };
 
     if (imageModel) {
       // Create Image Tensor
@@ -80,6 +83,8 @@ const playwrightClassification = {
         actual = mapBinaryPrediction(predictions, threhold, imageModel.image.labels);
       } else if (type == ClassificationType.Category) {
         actual = mapCategoryPrediction(predictions, threhold, imageModel.image.labels);
+      } else {
+        throw new Error('No Classification Type found');
       }
     }
 
@@ -87,12 +92,12 @@ const playwrightClassification = {
       name: originalMatcherName,
       message: originalMessage,
       pass,
-    } = jestExpect.toBe.call({ ...this, customTesters: [] }, actual, expected) as Result;
+    } = jestExpect.toBe.call({ ...this, customTesters: [] }, actual.highestLabel, expected) as Result;
 
-    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
+    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName, actual);
 
     return { pass, message };
   },
 };
 
-export default playwrightClassification;
+export default PlaywrightClassification;

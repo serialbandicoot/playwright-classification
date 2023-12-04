@@ -32,6 +32,7 @@ test.describe('Category classification', () => {
             expect(withoutColorCodes).toContain("expect(received).toImageClassification(expected) // Object.is equality")
             expect(withoutColorCodes).toContain("Expected: \"two\"")
             expect(withoutColorCodes).toContain("Received: \"nine\"")
+            expect(withoutColorCodes).toContain("The highest predicted label was nine with a prediction score of 0.998")
         }
     });
 
