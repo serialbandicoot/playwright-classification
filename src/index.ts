@@ -60,7 +60,7 @@ const PlaywrightClassification = {
 
     // Define actual-result
     let actual: ActualResult = {
-      highestLabel: ''
+      highestLabel: '',
     };
 
     if (imageModel) {
@@ -87,7 +87,6 @@ const PlaywrightClassification = {
         throw new Error('No Classification Type found');
       }
     }
-
 
     const {
       name: originalMatcherName,

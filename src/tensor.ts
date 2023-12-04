@@ -3,9 +3,9 @@ import * as tfn from '@tensorflow/tfjs-node';
 import * as fs from 'fs';
 
 export type ActualResult = {
-  highestLabel: string
-  highestValue?: number
-}
+  highestLabel: string;
+  highestValue?: number;
+};
 
 export const getImageTensor = async (
   path: string,
@@ -98,7 +98,6 @@ export const mapBinaryPrediction = (
   return {
     highestLabel: prediction,
   };
-  
 };
 
 // mapCategoryPrediction will run validation checks on the
@@ -154,6 +153,6 @@ export const mapCategoryPrediction = (
   }
 
   return {
-    highestLabel: ''
+    highestLabel: '',
   };
 };
