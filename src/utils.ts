@@ -10,7 +10,7 @@ type CustomMatcherReturnType = {
   log?: string[];
 };
 
-// @ts-expect-error CustomMatcherReturnType not generic Type
+// @ts-expect-error: CustomMatcherReturnType not generic Type
 export type thisType = ReturnType<Expect<CustomMatcherReturnType>>;
 
 export type Result = Pick<CustomMatcherReturnType, 'pass' | 'message' | 'name'>;
