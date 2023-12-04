@@ -10,7 +10,7 @@ type CustomMatcherReturnType = {
   log?: string[];
 };
 
-// @ts-ignore
+// @ts-expect-error
 export type thisType = ReturnType<Expect<CustomMatcherReturnType>>;
 
 export type Result = Pick<CustomMatcherReturnType, 'pass' | 'message' | 'name'>;
