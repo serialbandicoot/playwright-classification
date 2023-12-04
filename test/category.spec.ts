@@ -42,4 +42,15 @@ test.describe('Category classification', () => {
             "four", { model: "category", threshold: 0.5 });
     });
 
+    test('verify classiication in metadata', async ({ page }) => {
+        await page.goto("/");
+        try {
+            await expect(page.getByTestId("image-nine")).toImageClassification("unknown", {model: "category"});
+        } catch (error) {
+            const withoutColorCodes: string = error.message.replace(/\x1B\[[0-?]*[ -/]*[@-~]/g, '');
+            
+            expect(withoutColorCodes).toContain("Error: There is no label unknown found in four,nine,two")
+        }
+    });
+
 });
