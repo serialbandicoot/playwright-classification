@@ -39,7 +39,7 @@ const PlaywrightClassification = {
       if (foundImageModel) {
         imageModel = foundImageModel;
       } else {
-        throw new Error(`The model ${options?.model} was not found check Metdata`);
+        throw new Error(`The model ${options?.model} was not found check Metadata`);
       }
     } else {
       imageModel = imageModels[0];
