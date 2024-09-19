@@ -19,7 +19,7 @@ jobs:
           token: ${{ secrets.NPM_TOKEN }}
           node-version: 18
       - run: | 
-         npx playwright install --with-deps
+         npx playwright install --with-deps chromium
          npm install
 
       - name: Build
