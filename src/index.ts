@@ -14,15 +14,19 @@ import {
   mapCategoryPrediction,
 } from './tensor';
 import { createLocatorImage } from './image';
-import { thisType, Result, normalize } from './utils';
 
 const PlaywrightClassification = {
   async toImageClassification(
-    this: thisType,
     locator: Locator,
     expected: string,
     options?: { threshold?: number; model?: string },
   ) {
+
+    // Check if 'expected' is an empty string
+    if (!expected || expected.trim() === "") {
+      throw new Error("Expected classification cannot be an empty string");
+    }
+
     const expectedMatcherName = 'toImageClassification';
     // Get metadata from playright.config.ts
     const metadata = test.info().config.metadata;
@@ -33,7 +37,7 @@ const PlaywrightClassification = {
     const { valid, errors, imageModels } = validateMetadata(metadata);
 
     if (!valid || !imageModels) {
-      return new Error(errors.join('\n'));
+      throw new Error(errors.join('\n'));
     }
 
     // Get First or Correct Model by Name or Error
@@ -43,7 +47,7 @@ const PlaywrightClassification = {
       if (foundImageModel) {
         imageModel = foundImageModel;
       } else {
-        return new Error(`The model ${options?.model} was not found check Metdata`);
+        throw new Error(`The model ${options?.model} was not found check Metdata`);
       }
     } else {
       imageModel = imageModels[0];
@@ -51,7 +55,7 @@ const PlaywrightClassification = {
 
     const metaLabels = imageModel.image.labels;
     if (expected !== '' && !metaLabels.includes(expected)) {
-      return new Error(`There is no label ${expected} found in ${metaLabels.join(',')}`);
+      throw new Error(`There is no label '${expected}' found in '${metaLabels.join(', ')}'`);
     }
 
     let threhold = 0.95;
@@ -65,7 +69,7 @@ const PlaywrightClassification = {
 
     // Define actual-result
     let actual: ActualResult = {
-      highestLabel: '',
+      highestLabel: null,
     };
 
     if (imageModel) {
@@ -93,16 +97,25 @@ const PlaywrightClassification = {
       }
     }
 
-    const {
-      name: originalMatcherName,
-      message: originalMessage,
-      pass,
-    } = jestExpect.toBe.call({ ...this, customTesters: [] }, actual.highestLabel, expected) as Result;
+    // Evaluate the scores!
+    if (actual.highestLabel !== expected) {
+      const scoreMessage = actual.highestValue 
+        ? ` with a prediction score of: ${parseFloat(actual.highestValue.toFixed(2))}` 
+        : '';
 
-    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName, actual);
+      return {
+        pass: false,
+        message: () => `Expected Label to classify as '${expected}', but the highest classification was '${actual.highestLabel}'${scoreMessage}`,
+      };
+    }
 
-    return { pass, message };
+    // No message needed if the labels match
+    return {
+      pass: true,
+      message: () => 'Passed',
+    };
+
   },
 };
 
-export default PlaywrightClassification;
+export { PlaywrightClassification };

@@ -3,7 +3,7 @@ import * as tfn from '@tensorflow/tfjs-node';
 import * as fs from 'fs';
 
 export type ActualResult = {
-  highestLabel: string;
+  highestLabel: string | null;
   highestValue?: number;
 };
 
@@ -133,7 +133,7 @@ export const mapCategoryPrediction = (
   const predictedKV = labels.map((key, index) => ({ [key]: predicted[index] }));
 
   // Get the highest match
-  let highestKey = '';
+  let highestKey = null;
   let highestValue = -Infinity;
 
   predictedKV.forEach((item) => {
@@ -153,6 +153,6 @@ export const mapCategoryPrediction = (
   }
 
   return {
-    highestLabel: '',
+    highestLabel: null,
   };
 };

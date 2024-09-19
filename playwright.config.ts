@@ -1,4 +1,4 @@
-import PlaywrightClassification from './src'
+import { PlaywrightClassification } from './src'
 import { expect, PlaywrightTestConfig } from '@playwright/test';
 
 expect.extend(PlaywrightClassification);

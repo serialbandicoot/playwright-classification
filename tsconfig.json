@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "lib",
+    "outDir": "dist",
     "sourceMap": false,
     "moduleResolution": "node",
     "strict": true,
@@ -10,9 +10,14 @@
     "noImplicitAny": true,
     "resolveJsonModule": true,
     "allowJs": true,
-    "lib": ["es2021"],
-    "skipLibCheck": true
+    "lib": ["dom", "es2021"],
+    "types": ["node"],
+    "skipLibCheck": true,
+    "declaration": true
   },
-  "files": ["src/global.d.ts"],
-  "include": ["src/*.ts", "tests", "src/global.d.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/global.d.ts"
+  ],
+  "exclude": ["node_modules", "dist"]
 }

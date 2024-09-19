@@ -17,9 +17,14 @@ test.describe('Category classification', () => {
         await expect(page.getByTestId("image-nine")).toImageClassification("nine", {model: "category"});
     });
 
-    test('verify toImageClassification threshold too high', async ({ page }) => {
+    test('verify toImageClassification classification is not emp', async ({ page }) => {
         await page.goto("/");
-        await expect(page.getByTestId("image-two")).toImageClassification("", {model: "category", threshold: 0.999});
+        
+        try {
+            await expect(page.getByTestId("image-two")).toImageClassification("", {model: "category"});
+        } catch (error) {
+            expect(error.message).toEqual("Expected classification cannot be an empty string")
+        }
     });
 
     test('verify toImageClassification fails on category class prediction', async ({ page }) => {
@@ -27,12 +32,7 @@ test.describe('Category classification', () => {
         try {
             await expect(page.getByTestId("image-nine")).toImageClassification("two", {model: "category"});
         } catch (error) {
-            const withoutColorCodes: string = error.message.replace(/\x1B\[[0-?]*[ -/]*[@-~]/g, '');
-            
-            expect(withoutColorCodes).toContain("expect(received).toImageClassification(expected) // Object.is equality")
-            expect(withoutColorCodes).toContain("Expected: \"two\"")
-            expect(withoutColorCodes).toContain("Received: \"nine\"")
-            expect(withoutColorCodes).toContain("The highest predicted label was nine with a prediction score of 0.998")
+            expect(error.message).toEqual("Expected Label to classify as 'two', but the highest classification was 'nine' with a prediction score of: 1")
         }
     });
 
@@ -46,10 +46,8 @@ test.describe('Category classification', () => {
         await page.goto("/");
         try {
             await expect(page.getByTestId("image-nine")).toImageClassification("unknown", {model: "category"});
-        } catch (error) {
-            const withoutColorCodes: string = error.message.replace(/\x1B\[[0-?]*[ -/]*[@-~]/g, '');
-            
-            expect(withoutColorCodes).toContain("Error: There is no label unknown found in four,nine,two")
+        } catch (error) {            
+            expect(error.message).toContain("There is no label 'unknown' found in 'four, nine, two'")
         }
     });
 

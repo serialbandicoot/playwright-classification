@@ -26,13 +26,8 @@ test.describe('Binary classification', () => {
         await page.goto("/");
         try {
             await expect(page.getByTestId("image-five")).toImageClassification("nofive");
-        } catch (error) {
-            const withoutColorCodes: string = error.message.replace(/\x1B\[[0-?]*[ -/]*[@-~]/g, '');
-            
-            expect(withoutColorCodes).toContain("expect(received).toImageClassification(expected) // Object.is equality")
-            expect(withoutColorCodes).toContain("Expected: \"nofive\"")
-            expect(withoutColorCodes).toContain("Received: \"five\"")     
-            expect(withoutColorCodes).toContain("The highest predicted label was five")
+        } catch (error) {            
+            expect(error.message).toEqual("Expected Label to classify as 'nofive', but the highest classification was 'five'")
         }
     });
 
@@ -41,12 +36,7 @@ test.describe('Binary classification', () => {
         try {
             await expect(page.getByTestId("image-nofive")).toImageClassification("five");
         } catch (error) {
-            const withoutColorCodes: string = error.message.replace(/\x1B\[[0-?]*[ -/]*[@-~]/g, '');
-            
-            expect(withoutColorCodes).toContain("expect(received).toImageClassification(expected) // Object.is equality")
-            expect(withoutColorCodes).toContain("Expected: \"five\"")
-            expect(withoutColorCodes).toContain("Received: \"nofive\"")
-            expect(withoutColorCodes).toContain("The highest predicted label was nofive")
+            expect(error.message).toContain("Expected Label to classify as 'five', but the highest classification was 'nofive'")
         }
     });
 
