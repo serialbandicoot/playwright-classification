@@ -2,10 +2,10 @@
     "name": "playwright-classification",
     "version": "1.1.33",
     "description": "Custom playwright matchers to validate prediction classifiers on images or text.",
-    "main": "lib/index.js",
-    "types": "lib/global.d.ts",
+    "main": "dist/index.js",
+    "types": "dist/global.d.ts",
     "files": [
-        "lib"
+        "dist"
     ],
     "scripts": {
         "prepare": "npm run build",
