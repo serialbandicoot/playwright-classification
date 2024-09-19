@@ -7,7 +7,7 @@ test.describe('Vaidation', () => {
         try {
             await expect(page.getByTestId("image-nine")).toImageClassification("two", {model: "blah"});
         } catch (error) {            
-            expect(error.message).toContain("The model blah was not found check Metdata")
+            expect(error.message).toContain("The model blah was not found check Metadata")
         }
     });
 
