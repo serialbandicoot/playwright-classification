@@ -13,9 +13,9 @@ import {
 } from './tensor';
 import { createLocatorImage } from './image';
 
+/* eslint-disable @typescript-eslint/no-namespace */
 declare global {
   namespace PlaywrightTest {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface Matchers<R> {
       /**
        * Asserts that the locator matches the expected image classification
