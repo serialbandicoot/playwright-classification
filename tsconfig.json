@@ -13,11 +13,10 @@
     "lib": ["dom", "es2021"],
     "types": ["node"],
     "skipLibCheck": true,
-    "declaration": true
+    "declaration": true,
   },
   "include": [
     "src/**/*.ts",
-    "src/global.d.ts"
   ],
   "exclude": ["node_modules", "dist"]
 }
