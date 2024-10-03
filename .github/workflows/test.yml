@@ -25,6 +25,7 @@ jobs:
 
       - name: Run eslint & prettier
         run: |
+          npm ci
           if [[ "$RUNNER_OS" == "Windows" ]]; then
             npm run lint:win 
           else
@@ -34,7 +35,6 @@ jobs:
 
       - run: |
           npx playwright install --with-deps chromium
-          npm install
 
       - name: Build
         run: npm run build
