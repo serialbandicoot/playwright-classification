@@ -9,31 +9,32 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}  # Use the OS from the matrix
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        os: [ubuntu-20.04, macos-latest, windows-latest]  # Define the OS matrix
+        os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v3
-      
       - uses: actions/setup-node@v3
         with:
-          token: ${{ secrets.NPM_TOKEN }}
           node-version: 18
 
-      - name: Run eslint & prettier
-        run: |
-          npm ci
-          if [[ "$RUNNER_OS" == "Windows" ]]; then
-            npm run lint:win 
-          else
-            npm run lint:posix
-          fi
-          npm run format
+      - run: npm ci  
 
-      - run: |
+      - name: Run eslint & prettier (Windows)
+        if: runner.os == 'Windows'  # Only runs on Windows
+        run: npm run lint:win
+        shell: pwsh  
+
+      - name: Run eslint & prettier (Linux/Mac)
+        if: runner.os != 'Windows'  # Runs on Ubuntu or macOS
+        run: npm run lint:posix
+        shell: bash  
+
+      - name: Install Playwright
+        run: |
           npx playwright install --with-deps chromium
 
       - name: Build
