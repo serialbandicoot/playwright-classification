@@ -62,7 +62,7 @@ const PlaywrightClassification = {
       imageModel = imageModels[0];
     }
 
-    const metaLabels = imageModel.image.labels;
+    const metaLabels = imageModel.image.classes;
     if (expected !== '' && !metaLabels.includes(expected)) {
       throw new Error(`There is no label '${expected}' found in '${metaLabels.join(', ')}'`);
     }
@@ -98,9 +98,9 @@ const PlaywrightClassification = {
       // Binary || Category
       const type = getClassificationType(model);
       if (type == ClassificationType.Binary) {
-        actual = mapBinaryPrediction(predictions, threshold, imageModel.image.labels);
+        actual = mapBinaryPrediction(predictions, threshold, imageModel.image.classes);
       } else if (type == ClassificationType.Category) {
-        actual = mapCategoryPrediction(predictions, threshold, imageModel.image.labels);
+        actual = mapCategoryPrediction(predictions, threshold, imageModel.image.classes);
       } else {
         throw new Error('No Classification Type found');
       }
@@ -119,7 +119,7 @@ const PlaywrightClassification = {
       };
     }
 
-    // No message needed if the labels match
+    // No message needed if the classes match
     return {
       pass: true,
       message: () => 'Passed',

@@ -8,7 +8,7 @@ export type ImageClassificationMetadata = {
   image: {
     model: string;
     file: string;
-    labels: string[];
+    classes: string[];
     dimensions: {
       width: number;
       height: number;
@@ -90,8 +90,8 @@ export const validateImageMetadata = (metadata: Metadata): { valid: boolean; err
     errors.push('The "file" property should be a string.');
   }
 
-  if (!Array.isArray(metadata.labels) || !metadata.labels.every((label: string) => typeof label === 'string')) {
-    errors.push('The "labels" property should be an array of strings.');
+  if (!Array.isArray(metadata.classes) || !metadata.classes.every((label: string) => typeof label === 'string')) {
+    errors.push('The "classes" property should be an array of strings.');
   }
 
   if (
@@ -114,7 +114,7 @@ const parseImageClassificationMetadata = (image: Metadata): ImageClassificationM
     image: {
       model: image.model,
       file: image.file,
-      labels: image.labels,
+      classes: image.classes,
       dimensions: {
         width: image.dimensions.width,
         height: image.dimensions.height,

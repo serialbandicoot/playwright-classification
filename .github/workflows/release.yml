@@ -17,20 +17,28 @@ env:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}  # Use the OS from the matrix
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]  # Define the OS matrix
+
     steps:
       - uses: actions/checkout@v3
         with:
           ref: 'main'
           fetch-depth: 0
+      
       - uses: actions/setup-node@v3
         with:
           node-version: 18.x
+
       - name: NPM Setup
         run: |
           npm set registry "https://registry.npmjs.org/"
           npm set //registry.npmjs.org/:_authToken $NPM_TOKEN
           npm whoami
+      
       - name: Git Setup
         run: |
           git config --global user.email "samtreweek@gmail.com"
@@ -38,12 +46,12 @@ jobs:
 
       - run: | 
           npm install
-          npx playwright install --with-deps chromium
+          npx playwright install --with-deps chromium  # Install Playwright dependencies
 
       - name: Build
         run: npm run build
         env:
-            NODE_ENV: production
+          NODE_ENV: production
 
       - name: Run eslint & prettier
         run: npm run lint && npm run format:check
@@ -52,7 +60,7 @@ jobs:
         run: npm test
 
       - name: Release
-        run: npm run release:ci -- ${{github.event.inputs.releaseType}} --npm.tag=${{github.event.inputs.distTag}}
+        run: npm run release:ci -- ${{ github.event.inputs.releaseType }} --npm.tag=${{ github.event.inputs.distTag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

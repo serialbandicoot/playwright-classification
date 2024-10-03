@@ -18,7 +18,7 @@ const config: PlaywrightTestConfig = {
       image: {
         model: "binary",
         file: "./cnn/model_output/binary/model.json",
-        labels: [
+        classes: [
           "nofive",
           "five"
         ],
@@ -31,7 +31,7 @@ const config: PlaywrightTestConfig = {
       image: {
         model: "category",
         file: "./cnn/model_output/category/model.json",
-        labels: [
+        classes: [
           "four",
           "nine",
           "two"

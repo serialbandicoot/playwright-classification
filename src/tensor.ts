@@ -1,6 +1,7 @@
 import * as tf from '@tensorflow/tfjs';
 import * as tfn from '@tensorflow/tfjs-node';
 import * as fs from 'fs';
+import path from 'path';
 
 export type ActualResult = {
   highestLabel: string | null;
@@ -27,8 +28,10 @@ export const getImageTensor = async (
 
 // loadModel does loadModel
 
-export const loadModel = async (path: string): Promise<tf.LayersModel> => {
-  const handler = tfn.io.fileSystem(path);
+export const loadModel = async (modelPath: string): Promise<tf.LayersModel> => {
+  const absolutePath = path.resolve(modelPath);
+  console.log("Path", absolutePath);
+  const handler = tfn.io.fileSystem(absolutePath);
   return await tf.loadLayersModel(handler);
 };
 
@@ -79,10 +82,10 @@ export const getClassificationType = (model: tf.LayersModel) => {
 export const mapBinaryPrediction = (
   predictions: tf.Tensor<tf.Rank> | tf.Tensor<tf.Rank>[],
   threshold: number,
-  labels: string[],
+  classes: string[],
 ): ActualResult => {
-  if (!Array.isArray(labels) || labels.length !== 2) {
-    throw new Error('Labels should be an array of length 2.');
+  if (!Array.isArray(classes) || classes.length !== 2) {
+    throw new Error('Classes should be an array of length 2.');
   }
 
   if (Array.isArray(predictions)) {
@@ -93,7 +96,7 @@ export const mapBinaryPrediction = (
   // Extract the numeric value from the tensor
   const predictedValue = predictions.dataSync()[0];
 
-  const prediction = predictedValue >= threshold ? labels[0] : labels[1];
+  const prediction = predictedValue >= threshold ? classes[0] : classes[1];
 
   return {
     highestLabel: prediction,
@@ -107,9 +110,9 @@ export const mapBinaryPrediction = (
 export const mapCategoryPrediction = (
   predictions: tf.Tensor<tf.Rank> | tf.Tensor<tf.Rank>[],
   threshold: number,
-  labels: string[],
+  classes: string[],
 ): ActualResult => {
-  if (!Array.isArray(labels) || labels.length === 2) {
+  if (!Array.isArray(classes) || classes.length === 2) {
     throw new Error('Labels should be an array of more than two.');
   }
 
@@ -125,12 +128,12 @@ export const mapCategoryPrediction = (
   // Extract the numeric value from the tensor
   const predicted = predictions.dataSync();
 
-  if (predicted.length !== labels.length) {
-    throw new Error(`Incorrect number of categories, provided ${labels.length} got ${predicted.length}`);
+  if (predicted.length !== classes.length) {
+    throw new Error(`Incorrect number of categories, provided ${classes.length} got ${predicted.length}`);
   }
 
-  // Map predictions with labels
-  const predictedKV = labels.map((key, index) => ({ [key]: predicted[index] }));
+  // Map predictions with classes
+  const predictedKV = classes.map((key, index) => ({ [key]: predicted[index] }));
 
   // Get the highest match
   let highestKey = null;

@@ -50,7 +50,7 @@ test('Verify Image Classification', async ({ page }) => {
 });
 ```
 
-This example, the macther will etract an image of the locator, this is saved to `test-results/{the-test-name}`. The locator In this example is found using `getByTestId`. The `toImageClassification` matcher will then classify the extracted element screenshot with model label `five.` See [Metadata Configuration](#metadata-configuration) below to setup labels.
+This example, the macther will etract an image of the locator, this is saved to `test-results/{the-test-name}`. The locator In this example is found using `getByTestId`. The `toImageClassification` matcher will then classify the extracted element screenshot with model label `five.` See [Metadata Configuration](#metadata-configuration) below to setup classes.
 
 ### Optional
 
@@ -77,7 +77,7 @@ metadata: {
         image: {
             model: "binary",
             file: "./cnn/model_output/binary/model.json",
-            labels: [
+            classes: [
                 "nofive",
                 "five"
             ],
@@ -90,7 +90,7 @@ metadata: {
         image: {
             model: "category",
             file: "./cnn/model_output/category/model.json",
-            labels: [
+            classes: [
                 "four",
                 "nine",
                 "two"
@@ -106,17 +106,17 @@ metadata: {
 
 ## Metadata Configuration Items
 
-| Item         | Description                                                |
-|-------------- | ---------------------------------------------------------- |
-| model        | The name of the model or a user-defined reference.         |
-| file         | The relative path to the model.                             |
-| labels       | The order in which the model's predictive layer refers to the class labels. |
-| dimensions   | The width and height of the images on which the model has been trained. |
+| Item          | Description                                                             |
+|-------------- | ----------------------------------------------------------------------- |
+| model         | The name of the model or a user-defined reference.                      |
+| file          | The relative path to the model from the playwright.config.ts file       |
+| classes       | The order in which the model's predictive layer refers to the classes.  |
+| dimensions    | The width and height of the images on which the model has been trained. |
 
 
 ## Convolutional Neural Networks (CNN)
 
-A CNN is a type of artificial intelligence algorithm used for tasks like image recognition. It's inspired by the way the human visual system works. The question, why do I need this in my playwright tests? Is a question related to why do you need a matcher which can be ambingous in nature, due to a machine models predictive ability.
+A CNN is a type of artificial intelligence algorithm used for tasks like image recognition. It's inspired by the way the human visual system works. The question, why do I need this in my playwright tests? Is a question related to why do you need a matcher which can be ambiguous in nature, due to a machine models predictive ability.
 
 The image below show's a collection of MNIST numbers and a completely unrelated image, which has made up the set of two models used in creating this library. The first a Binary CNN, this has been defined as Five or Not Five. The second Category defined as Two, Four and Nine. The underlying images, all found in the `cnn/data` folder have been used to create a model, which was then converted to a Tensorflow JSON model (with it's associated weights). 
 
