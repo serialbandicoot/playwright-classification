@@ -23,17 +23,23 @@ jobs:
           [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; 
           iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
-      - name: Install Python 2
+      - name: Check and Install Python 2
         shell: pwsh
-        run: choco install python2 -y
+        run: |
+          if (-not (choco list --local-only | Select-String "python2")) {
+            choco install python2 -y
+          } else {
+            Write-Host "Python 2 is already installed."
+          }
 
-      - name: Uninstall Current Node.js
+      - name: Check and Install Node.js 16
         shell: pwsh
-        run: choco uninstall nodejs -y
-
-      - name: Install Node.js 16
-        shell: pwsh
-        run: choco install nodejs --version=16.20.0 -y
+        run: |
+          if (-not (choco list --local-only | Select-String "nodejs")) {
+            choco install nodejs --version=16.20.0 -y
+          } else {
+            Write-Host "Node.js 16 is already installed."
+          }
 
       - name: Verify Python 2 Installation
         shell: pwsh
