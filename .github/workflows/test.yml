@@ -9,61 +9,28 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}  # Use the OS from the matrix
 
     strategy:
       matrix:
-        os: [windows-latest]
+        os: [ubuntu-20.04, macos-latest]  # Define the OS matrix
 
     steps:
       - uses: actions/checkout@v3
+      
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.13
+          token: ${{ secrets.NPM_TOKEN }}
+          node-version: 18
 
       - run: |
-          systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
-          python --version
-          npm install -g node-gyp
-          node-gyp configure --verbose
-          # npm install @tensorflow/tfjs-node@3.1.0
-          # echo "rebuild from source"
-          # npm rebuild @tensorflow/tfjs-node --build-addon-from-source
-          # echo "running tesnor flow ..."
-          # # dir D:\a\playwright-classification\playwright-classification\node_modules\@tensorflow\tfjs-node\lib\napi-v8
-          # node win/index.js
-        shell: pwsh 
+          npx playwright install --with-deps chromium
+          npm install
+      - name: Build
+        run: npm run build
 
-      # # Fix TensorFlow Native Bindings (Windows)
-      # - name: Fix TensorFlow Native Bindings (Windows)
-      #   if: runner.os == 'Windows'
-      #   run: |
-      #     npm rebuild @tensorflow/tfjs-node --build-from-source
-      #     if not exist "node_modules\@tensorflow\tfjs-node\lib\napi-v8\tfjs_binding.node" (
-      #       echo "TensorFlow binding not found. Installing manually..."
-      #       npm install @tensorflow/tfjs-node
-      #     )
-      #   shell: cmd
+      - name: Run eslint & prettier
+        run: npm run lint && npm run format:check
 
-      # # Linting step for Windows
-      # - name: Run eslint & prettier (Windows)
-      #   if: runner.os == 'Windows'
-      #   run: npm run lint:win
-      #   shell: pwsh  # Use PowerShell for Windows
-
-      # # Linting step for Linux/Mac
-      # - name: Run eslint & prettier (Linux/Mac)
-      #   if: runner.os != 'Windows'
-      #   run: npm run lint:posix
-      #   shell: bash  # Use Bash for Linux/Mac
-
-      # # Install Playwright
-      # - name: Install Playwright
-      #   run: |
-      #     npx playwright install --with-deps chromium
-
-      # - name: Build
-      #   run: npm run build
-
-      # - name: Run tests
-      #   run: npm test
+      - name: Run tests
+        run: npm test
