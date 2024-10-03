@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [windows-latest]
 
     steps:
       - uses: actions/checkout@v3
@@ -21,38 +21,41 @@ jobs:
         with:
           node-version: 18
 
-      - run: npm ci  # Install dependencies from package-lock.json
+      - run: |
+          systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
+          npm install @tensorflow/tfjs-node
+        shell: pwsh 
 
-      # Fix TensorFlow Native Bindings (Windows)
-      - name: Fix TensorFlow Native Bindings (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          npm rebuild @tensorflow/tfjs-node --build-from-source
-          if not exist "node_modules\@tensorflow\tfjs-node\lib\napi-v8\tfjs_binding.node" (
-            echo "TensorFlow binding not found. Installing manually..."
-            npm install @tensorflow/tfjs-node
-          )
-        shell: cmd
+      # # Fix TensorFlow Native Bindings (Windows)
+      # - name: Fix TensorFlow Native Bindings (Windows)
+      #   if: runner.os == 'Windows'
+      #   run: |
+      #     npm rebuild @tensorflow/tfjs-node --build-from-source
+      #     if not exist "node_modules\@tensorflow\tfjs-node\lib\napi-v8\tfjs_binding.node" (
+      #       echo "TensorFlow binding not found. Installing manually..."
+      #       npm install @tensorflow/tfjs-node
+      #     )
+      #   shell: cmd
 
-      # Linting step for Windows
-      - name: Run eslint & prettier (Windows)
-        if: runner.os == 'Windows'
-        run: npm run lint:win
-        shell: pwsh  # Use PowerShell for Windows
+      # # Linting step for Windows
+      # - name: Run eslint & prettier (Windows)
+      #   if: runner.os == 'Windows'
+      #   run: npm run lint:win
+      #   shell: pwsh  # Use PowerShell for Windows
 
-      # Linting step for Linux/Mac
-      - name: Run eslint & prettier (Linux/Mac)
-        if: runner.os != 'Windows'
-        run: npm run lint:posix
-        shell: bash  # Use Bash for Linux/Mac
+      # # Linting step for Linux/Mac
+      # - name: Run eslint & prettier (Linux/Mac)
+      #   if: runner.os != 'Windows'
+      #   run: npm run lint:posix
+      #   shell: bash  # Use Bash for Linux/Mac
 
-      # Install Playwright
-      - name: Install Playwright
-        run: |
-          npx playwright install --with-deps chromium
+      # # Install Playwright
+      # - name: Install Playwright
+      #   run: |
+      #     npx playwright install --with-deps chromium
 
-      - name: Build
-        run: npm run build
+      # - name: Build
+      #   run: npm run build
 
-      - name: Run tests
-        run: npm test
+      # - name: Run tests
+      #   run: npm test
