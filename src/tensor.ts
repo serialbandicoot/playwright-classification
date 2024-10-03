@@ -30,7 +30,7 @@ export const getImageTensor = async (
 
 export const loadModel = async (modelPath: string): Promise<tf.LayersModel> => {
   const absolutePath = path.resolve(modelPath);
-  console.log("Path", absolutePath);
+  console.log('Path', absolutePath);
   const handler = tfn.io.fileSystem(absolutePath);
   return await tf.loadLayersModel(handler);
 };
