@@ -27,7 +27,7 @@ jobs:
           npm install -g node-gyp
           npm install @tensorflow/tfjs-node@3.1.0
           echo "running tesnor flow ..."
-          dir D:\a\playwright-classification\playwright-classification\node_modules\@tensorflow\tfjs-node\lib\napi-v8
+          # dir D:\a\playwright-classification\playwright-classification\node_modules\@tensorflow\tfjs-node\lib\napi-v8
           node win/index.js
         shell: pwsh 
 
