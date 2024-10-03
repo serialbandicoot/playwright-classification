@@ -21,18 +21,32 @@ jobs:
         with:
           node-version: 18
 
-      - run: npm ci  
+      - run: npm ci  # Install dependencies from package-lock.json
 
+      # Fix TensorFlow Native Bindings (Windows)
+      - name: Fix TensorFlow Native Bindings (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          npm rebuild @tensorflow/tfjs-node --build-from-source
+          if not exist "node_modules\@tensorflow\tfjs-node\lib\napi-v8\tfjs_binding.node" (
+            echo "TensorFlow binding not found. Installing manually..."
+            npm install @tensorflow/tfjs-node
+          )
+        shell: cmd
+
+      # Linting step for Windows
       - name: Run eslint & prettier (Windows)
-        if: runner.os == 'Windows'  # Only runs on Windows
+        if: runner.os == 'Windows'
         run: npm run lint:win
-        shell: pwsh  
+        shell: pwsh  # Use PowerShell for Windows
 
+      # Linting step for Linux/Mac
       - name: Run eslint & prettier (Linux/Mac)
-        if: runner.os != 'Windows'  # Runs on Ubuntu or macOS
+        if: runner.os != 'Windows'
         run: npm run lint:posix
-        shell: bash  
+        shell: bash  # Use Bash for Linux/Mac
 
+      # Install Playwright
       - name: Install Playwright
         run: |
           npx playwright install --with-deps chromium
