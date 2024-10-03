@@ -24,6 +24,7 @@ jobs:
       - run: |
           systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
           python --version
+          npm install -g windows-build-tools
           npm install -g node-gyp
           npm install @tensorflow/tfjs-node
           echo "running tesnor flow ..."
