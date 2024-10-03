@@ -23,15 +23,21 @@ jobs:
           token: ${{ secrets.NPM_TOKEN }}
           node-version: 18
 
+      - name: Run eslint & prettier
+        run: |
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            npm run lint:win 
+          else
+            npm run lint:posix
+          fi
+          npm run format
+
       - run: |
           npx playwright install --with-deps chromium
           npm install
 
       - name: Build
         run: npm run build
-
-      - name: Run eslint & prettier
-        run: npm run lint && npm run format:check
 
       - name: Run tests
         run: npm test
