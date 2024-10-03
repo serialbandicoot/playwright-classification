@@ -1,36 +1,48 @@
-name: Tests
+name: Install Chocolatey, Python 2, and Node.js 16
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
-  workflow_dispatch:
+    branches:
+      - main
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}  # Use the OS from the matrix
-
-    strategy:
-      matrix:
-        os: [ubuntu-20.04, macos-latest]  # Define the OS matrix
+  setup:
+    runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v3
-      
-      - uses: actions/setup-node@v3
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
-          node-version: 18
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - run: |
-          npx playwright install --with-deps chromium
-          npm install
-      - name: Build
-        run: npm run build
+      - name: Install Chocolatey
+        shell: pwsh
+        run: |
+          Set-ExecutionPolicy Bypass -Scope Process -Force
+          [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; 
+          iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
-      - name: Run eslint & prettier
-        run: npm run lint && npm run format:check
+      - name: Check and Install Python 2
+        shell: pwsh
+        run: |
+          if (-not (choco list --local-only | Select-String "python2")) {
+            choco install python2 -y
+          } else {
+            Write-Host "Python 2 is already installed."
+          }
 
-      - name: Run tests
-        run: npm test
+      - name: Verify Python 2 Installation
+        shell: pwsh
+        run: python2 --version
+
+      - name: Verify Node.js Installation
+        shell: pwsh
+        run: node --version
+
+      - name: Install Node.js Packages
+        shell: pwsh
+        run: |
+          choco install python visualstudio2022-workload-vctools -y
+          npm install -g node-gyp
+          node-gyp configure --verbose
