@@ -19,14 +19,13 @@ jobs:
         with:
           node-version: 18
 
-      - run: |
+      - name: Build
+        run: |
           pwd
           ls
           yarn
           node-pre-gyp install --build-from-source
-#          tar -czvf CPU-windows-0.0.0.zip -C lib napi-v8/tfjs_binding.node
-        with:
-          working-directory: tfjs-node
+        working-directory: tfjs-node
 
       - uses: actions/upload-artifact@v4
         with:
