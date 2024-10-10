@@ -1,0 +1,32 @@
+name: Build TS-node for windows
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest  # Use the OS from the matrix
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: 'tensorflow/tfjs'
+      
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Build
+        run: |
+          pwd
+          ls
+          yarn
+          yarn build-addon-from-source
+        working-directory: tfjs-node
+
+      - uses: actions/upload-artifact@v4
+        with:
+          path: lib
