@@ -1,0 +1,29 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}  # Use the OS from the matrix
+
+    strategy:
+      matrix:
+        os: [windows-latest]  # Define the OS matrix
+
+    steps:
+      
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - run: |
+          npm install @tensorflow/tfjs-node@4.21.0
+
+      - uses: actions/upload-artifact@v4
+        with:
+          path: node_modules
