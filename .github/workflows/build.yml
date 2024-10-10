@@ -1,4 +1,4 @@
-name: Tests
+name: Build TS-node for windows
 
 on:
   push:
@@ -9,21 +9,22 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}  # Use the OS from the matrix
-
-    strategy:
-      matrix:
-        os: [windows-latest]  # Define the OS matrix
-
+    runs-on: windows-latest  # Use the OS from the matrix
     steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: 'tensorflow/tfjs'
       
       - uses: actions/setup-node@v3
         with:
           node-version: 18
 
       - run: |
-          npm install @tensorflow/tfjs-node@4.21.0
+          cd tfjs-node
+          yarn
+          yarn build-addon-from-source
+          tar -czvf CPU-windows-0.0.0.zip -C lib napi-v8/tfjs_binding.node
 
       - uses: actions/upload-artifact@v4
         with:
-          path: node_modules
+          path: tfjs-node/CPU-windows-0.0.0.zip
