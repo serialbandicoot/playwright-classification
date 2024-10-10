@@ -70,8 +70,8 @@
         "typescript-eslint": "^8.6.0"
     },
     "dependencies": {
-        "@tensorflow/tfjs": "^4.11.0",
-        "@tensorflow/tfjs-node": "^4.11.0",
+        "@tensorflow/tfjs": "4.21.0",
+        "@tensorflow/tfjs-node": "file:tensorflow-tfjs-node-4.21.0-custom.tar",
         "expect": "^29.6.2"
     },
     "peerDependencies": {
